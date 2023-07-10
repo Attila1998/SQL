@@ -1,0 +1,49 @@
+-- Music plusz pontok
+
+--1 határozd meg melyik banda  a leghíresebb,credit alapján
+select art.name,a.artist_credit
+from artist_credit_name a join artist art
+on a.artist = art.id
+order by a.artist_credit desc
+limit 1;
+
+--2 határozd meg az első 5 legíheresebb bandát és az utolsó 5 bandát credit alapján
+SELECT  *
+FROM    
+(select art.name,a.artist_credit
+from artist_credit_name a join artist art
+on a.artist = art.id
+order by a.artist_credit desc
+limit 6)
+UNION 
+SELECT  *
+FROM    
+(select art.name,a.artist_credit
+from artist_credit_name a join artist art
+on a.artist = art.id
+order by a.artist_credit asc
+limit 5);
+
+--3 határozd meg melyik év tizedbten jött ki a legtöbb zeneszám(megjelenítés év+0s)
+select *
+from release_info;
+
+select a.name,substr(date_year,1,3)||'0s',count(*)
+from area a join release_info r
+on a.id = r.area
+where date_year is not null
+group by a.name
+order by count(*) desc;
+
+--4 hatarozd meg milyen mufajból adtak ki a legtöbbet
+select *
+from work;
+select *
+from work_type;
+
+select wt.name,count(*)
+from work_type wt join work w
+on wt.id = w.type
+group by w.type
+order by count(*) desc
+limit 1;
